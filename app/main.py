@@ -1,6 +1,8 @@
 import bottle
 import json
 import sys
+
+from random import choice
 # This comment means nothing I am just testing something
 
 UP = u'up'
@@ -19,7 +21,7 @@ def index():
 
 @bottle.post('/start')
 def start():
-    data = bottle.request.json
+    # data = bottle.request.json
 
     return json.dumps({
         'name': 'nagini',
@@ -28,6 +30,25 @@ def start():
         'taunt': 'All your base are belong to us!'
     })
 
+def get_possible_directions(nagini, board):
+    width = len(board)
+    height = len(board[0])
+
+    coords = nagini['coords']
+    head_x, head_y = coords[0][0], coords[0][1]
+
+    directions = []
+
+    if head_x + 1 < width and board[head_x+1][head_y].state == 'empty':
+        directions.append(RIGHT)
+    if head_x - 1 >= 0 and board[head_x-1][head_y].state == 'empty':
+        directions.append(LEFT)
+    if head_y + 1 > height and board[head_x][head_y+1].state == 'empty':
+        directions.append(UP)
+    if head_y - 1 >= 0 and board[head_x][head_y-1].state == 'empty':
+        directions.append(DOWN)
+
+    return directions
 
 @bottle.post('/move')
 def move():
@@ -40,6 +61,8 @@ def move():
     coords = nagini['coords']
     head_x, head_y = coords[0][0], coords[0][1]
 
+    directions = get_possible_directions(nagini, data['board'])
+
     # If not on an edge, start moving towards one
     if not any([head_x in (0, width-1), head_y in (0, height-1)]):
         edge_distances = [
@@ -49,7 +72,7 @@ def move():
             (LEFT, head_x)
         ]
         dist_min = sys.maxint
-        min_index = -1
+        # min_index = -1
 
         # Find the closest edge's index
         for i, d in enumerate(edge_distances):
@@ -59,12 +82,7 @@ def move():
 
         direction = edge_distances[index][0]
 
-        return json.dumps({
-            'move': direction,
-            'taunt': direction
-        })
-
-    if head_y == 0 and 0 <= head_x <= width-2:
+    elif head_y == 0 and 0 <= head_x <= width-2:
         direction = RIGHT
     elif head_x == width-1 and 0 <= head_y <= height-2:
         direction = DOWN
@@ -74,14 +92,14 @@ def move():
         direction = UP
 
     return json.dumps({
-        'move': direction,
+        'move': direction if direction in directions else choice(directions),
         'taunt': 'All your base are belong to us!'
     })
 
 
 @bottle.post('/end')
 def end():
-    data = bottle.request.json
+    # data = bottle.request.json
 
     return json.dumps({})
 
