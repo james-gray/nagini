@@ -51,6 +51,7 @@ def move():
         dist_min = sys.maxint
         min_index = -1
 
+        # Find the closest edge's index
         for i, d in enumerate(edge_distances):
             if d[1] < dist_min:
                 dist_min = edge_distances[i][1]
@@ -63,8 +64,17 @@ def move():
             'taunt': direction
         })
 
+    if head_y == 0 and 0 <= head_x <= width-2:
+        direction = RIGHT
+    elif head_x == width-1 and 0 <= head_y <= height-2:
+        direction = DOWN
+    elif head_y == height-1 and 1 <= head_x <= width-1:
+        direction = LEFT
+    else:
+        direction = UP
+
     return json.dumps({
-        'move': 'left',
+        'move': direction,
         'taunt': 'All your base are belong to us!'
     })
 
