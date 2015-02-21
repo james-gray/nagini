@@ -1,8 +1,6 @@
 import bottle
 import json
 
-from pprint import pprint
-
 @bottle.get('/')
 def index():
     return """
@@ -27,7 +25,7 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-    pprint(data)
+    print data
 
     return json.dumps({
         'move': 'left',
