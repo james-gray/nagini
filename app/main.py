@@ -50,13 +50,21 @@ def get_adjacent_cells(nagini, board):
 
     return adjacents
 
-def get_possible_directions(nagini, board):
-    width = len(board)
-    height = len(board[0])
-
+def seppuku(nagini, board):
     coords = nagini['coords']
     head_x, head_y = coords[0][0], coords[0][1]
+    adjacents = get_adjacent_cells(nagini, board)
 
+    directions = [
+        adj['direction']
+        for adj in adjacents
+        if board[adj['x']][adj['y']]['snake'] == 'nagini'
+    ]
+
+    return choice(directions)
+
+
+def look_ahead(head_x, head_y, board):
     directions = []
     safe_states = ('empty', 'food')
 
@@ -71,18 +79,36 @@ def get_possible_directions(nagini, board):
 
     return directions
 
-def seppuku(nagini, board):
+def get_possible_directions(nagini, board):
+    width = len(board)
+    height = len(board[0])
+
     coords = nagini['coords']
     head_x, head_y = coords[0][0], coords[0][1]
-    adjacents = get_adjacent_cells(nagini, board)
+    
+    look_ahead1 = look_ahead(head_x, head_y, board)
 
-    directions = [
-        adj['direction']
-        for adj in adjacents
-        if board[adj['x']][adj['y']]['snake'] == 'nagini'
-    ]
+    directions = []
 
-    return choice(directions)
+    for direction in look_ahead1:
+        if direction == UP:
+            look_aheadUP = look_ahead(head_x, head_y+1, board)
+            if len(look_aheadUP) > 0:
+                directions.append(UP)
+        elif direction == DOWN:
+            look_aheadDOWN = look_ahead(head_x, head_y-1, board)
+            if len(look_aheadDOWN) > 0:
+                directions.append(DOWN)
+        elif direction == LEFT:
+            look_aheadLEFT = look_ahead(head_x-1, head_y, board)
+            if len(look_aheadLEFT) > 0:
+                directions.append(LEFT)
+        elif direction == RIGHT:
+            look_aheadRIGHT = look_ahead(head_x+1, head_y+1, board)
+            if len(look_aheadRIGHT) > 0:
+                directions.append(RIGHT)
+
+    return directions
 
 @bottle.post('/move')
 def move():
