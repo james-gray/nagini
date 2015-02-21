@@ -65,6 +65,9 @@ def seppuku(nagini, board):
 
 
 def look_ahead(head_x, head_y, board):
+    width = len(board)
+    height = len(board[0])
+
     directions = []
     safe_states = ('empty', 'food')
 
@@ -80,12 +83,9 @@ def look_ahead(head_x, head_y, board):
     return directions
 
 def get_possible_directions(nagini, board):
-    width = len(board)
-    height = len(board[0])
-
     coords = nagini['coords']
     head_x, head_y = coords[0][0], coords[0][1]
-    
+
     look_ahead1 = look_ahead(head_x, head_y, board)
 
     directions = []
