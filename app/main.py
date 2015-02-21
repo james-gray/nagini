@@ -5,8 +5,8 @@ import json
 @bottle.get('/')
 def index():
     return """
-        <a href="https://github.com/sendwithus/battlesnake-python">
-            battlesnake-python
+        <a href="https://github.com/james-gray/nagini">
+            nagini
         </a>
     """
 
@@ -16,10 +16,10 @@ def start():
     data = bottle.request.json
 
     return json.dumps({
-        'name': 'battlesnake-python',
+        'name': 'nagini',
         'color': '#00ff00',
-        'head_url': 'http://battlesnake-python.herokuapp.com',
-        'taunt': 'battlesnake-python!'
+        'head_url': 'http://images5.fanpop.com/image/photos/30100000/Santa-Voldemort-snapes-family-and-friends-30187028-600-351.jpg',
+        'taunt': 'All your base are belong to us!'
     })
 
 
@@ -29,7 +29,7 @@ def move():
 
     return json.dumps({
         'move': 'left',
-        'taunt': 'battlesnake-python!'
+        'taunt': 'All your base are belong to us!'
     })
 
 

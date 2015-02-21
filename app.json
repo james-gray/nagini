@@ -1,10 +1,10 @@
 {
-  "name": "battlesnake-python",
-  "description": "A simple BattleSnake AI written in Python.",
+  "name": "nagini",
+  "description": "A BattleSnake AI written in Python.",
   "keywords": [
     "battlesnake",
     "sendwithus"
   ],
   "website": "http://battlesnake.io",
-  "repository": "https://github.com/sendwithus/battlesnake-python"
+  "repository": "https://github.com/james-gray/nagini"
 }
