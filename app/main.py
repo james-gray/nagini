@@ -92,11 +92,11 @@ def get_possible_directions(nagini, board):
 
     for direction in look_ahead1:
         if direction == UP:
-            look_aheadUP = look_ahead(head_x, head_y+1, board)
+            look_aheadUP = look_ahead(head_x, head_y-1, board)
             if len(look_aheadUP) > 0:
                 directions.append(UP)
         elif direction == DOWN:
-            look_aheadDOWN = look_ahead(head_x, head_y-1, board)
+            look_aheadDOWN = look_ahead(head_x, head_y+1, board)
             if len(look_aheadDOWN) > 0:
                 directions.append(DOWN)
         elif direction == LEFT:
@@ -104,7 +104,7 @@ def get_possible_directions(nagini, board):
             if len(look_aheadLEFT) > 0:
                 directions.append(LEFT)
         elif direction == RIGHT:
-            look_aheadRIGHT = look_ahead(head_x+1, head_y+1, board)
+            look_aheadRIGHT = look_ahead(head_x+1, head_y, board)
             if len(look_aheadRIGHT) > 0:
                 directions.append(RIGHT)
 
