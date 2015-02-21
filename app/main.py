@@ -56,7 +56,7 @@ def move():
                 dist_min = edge_distances[i][1]
                 index = i
 
-        direction = edge_distances[i][0]
+        direction = edge_distances[index][0]
 
         return json.dumps({
             'move': direction,
