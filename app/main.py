@@ -17,7 +17,7 @@ def start():
     return json.dumps({
         'name': 'nagini',
         'color': '#00ff00',
-        'head_url': 'http://images5.fanpop.com/image/photos/30100000/Santa-Voldemort-snapes-family-and-friends-30187028-600-351.jpg',
+        'head_url': 'https://raw.githubusercontent.com/james-gray/nagini/master/SnakeHead.png',
         'taunt': 'All your base are belong to us!'
     })
 
