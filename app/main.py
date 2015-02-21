@@ -38,14 +38,15 @@ def get_possible_directions(nagini, board):
     head_x, head_y = coords[0][0], coords[0][1]
 
     directions = []
+    safe_states = ('empty', 'food')
 
-    if head_x + 1 < width and board[head_x+1][head_y]['state'] == 'empty':
+    if head_x + 1 < width and board[head_x+1][head_y]['state'] in safe_states:
         directions.append(RIGHT)
-    if head_x - 1 >= 0 and board[head_x-1][head_y]['state'] == 'empty':
+    if head_x - 1 >= 0 and board[head_x-1][head_y]['state'] in safe_states:
         directions.append(LEFT)
-    if head_y + 1 < height and board[head_x][head_y+1]['state'] == 'empty':
+    if head_y + 1 < height and board[head_x][head_y+1]['state'] in safe_states:
         directions.append(DOWN)
-    if head_y - 1 >= 0 and board[head_x][head_y-1]['state'] == 'empty':
+    if head_y - 1 >= 0 and board[head_x][head_y-1]['state'] in safe_states:
         directions.append(UP)
 
     return directions
