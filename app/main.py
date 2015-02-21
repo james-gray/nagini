@@ -30,7 +30,7 @@ def start():
         'taunt': 'All your base are belong to us!'
     })
 
-def get_adjacent_cells(nagini, board)
+def get_adjacent_cells(nagini, board):
     width = len(board)
     height = len(board[0])
 
