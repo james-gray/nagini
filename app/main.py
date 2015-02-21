@@ -30,6 +30,26 @@ def start():
         'taunt': 'All your base are belong to us!'
     })
 
+def get_adjacent_cells(nagini, board)
+    width = len(board)
+    height = len(board[0])
+
+    coords = nagini['coords']
+    head_x, head_y = coords[0][0], coords[0][1]
+
+    adjacents = []
+
+    if head_x + 1 < width:
+        adjacents.append({'x': head_x+1, 'y': head_y, 'direction': RIGHT})
+    if head_x - 1 >= 0:
+        adjacents.append({'x': head_x-1, 'y': head_y, 'direction': LEFT})
+    if head_y + 1 < height:
+        adjacents.append({'x': head_x, 'y': head_y+1, 'direction': DOWN})
+    if head_y - 1 >= 0:
+        adjacents.append({'x': head_x, 'y': head_y-1, 'direction': UP})
+
+    return adjacents
+
 def get_possible_directions(nagini, board):
     width = len(board)
     height = len(board[0])
@@ -51,6 +71,19 @@ def get_possible_directions(nagini, board):
 
     return directions
 
+def seppuku(nagini, board):
+    coords = nagini['coords']
+    head_x, head_y = coords[0][0], coords[0][1]
+    adjacents = get_adjacent_cells(nagini, board)
+
+    directions = [
+        adj['direction']
+        for adj in adjacents
+        if board[adj['x']][adj['y']]['snake'] == 'nagini'
+    ]
+
+    return choice(directions)
+
 @bottle.post('/move')
 def move():
     data = bottle.request.json
@@ -63,6 +96,13 @@ def move():
     head_x, head_y = coords[0][0], coords[0][1]
 
     directions = get_possible_directions(nagini, data['board'])
+    if not directions:
+        # Commit suicide honorably so as not to give any victories to
+        # the other inferior snakes!
+        return json.dumps({
+            'move': seppuku(nagini, data['board']),
+            'taunt': 'You will always remember this as the day you almost caught Captain Jack Sparrow!'
+        })
 
     # If not on an edge, start moving towards one
     if not any([head_x in (0, width-1), head_y in (0, height-1)]):
