@@ -39,13 +39,13 @@ def get_possible_directions(nagini, board):
 
     directions = []
 
-    if head_x + 1 < width and board[head_x+1][head_y].state == 'empty':
+    if head_x + 1 < width and board[head_x+1][head_y]['state'] == 'empty':
         directions.append(RIGHT)
-    if head_x - 1 >= 0 and board[head_x-1][head_y].state == 'empty':
+    if head_x - 1 >= 0 and board[head_x-1][head_y]['state'] == 'empty':
         directions.append(LEFT)
-    if head_y + 1 > height and board[head_x][head_y+1].state == 'empty':
+    if head_y + 1 > height and board[head_x][head_y+1]['state'] == 'empty':
         directions.append(UP)
-    if head_y - 1 >= 0 and board[head_x][head_y-1].state == 'empty':
+    if head_y - 1 >= 0 and board[head_x][head_y-1]['state'] == 'empty':
         directions.append(DOWN)
 
     return directions
