@@ -65,8 +65,8 @@ def seppuku(nagini, board):
 
 
 def look_ahead(head_x, head_y, board):
-    width = len(board)
-    height = len(board[0])
+    width = len(board) - 1
+    height = len(board[0]) - 1
 
     directions = []
     safe_states = ('empty', 'food')
