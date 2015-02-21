@@ -25,7 +25,11 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-    print data
+
+    width = len(data['board'])
+    height = len(data['board'][0])
+
+    nagini = [s for s in data['snakes'] if s['name'] == 'nagini'][0]
 
     return json.dumps({
         'move': 'left',
