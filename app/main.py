@@ -26,6 +26,7 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
+    print data['board'][0]
 
     return json.dumps({
         'move': 'left',

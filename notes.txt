@@ -1,0 +1,19 @@
+assume no new food spawns on turn
+each turn
+    check every permutation of how other snakes could move
+    have a function that decides whether the move that we make for that outcome is valuable
+        think about what could be good/what could be bad
+        win conditions/loss conditions
+
+        moving closer to food is good
+        dieing is bad
+
+
+V1:
+circle
+V2:
+diverge for guaranteed food
+V3:
+simple agression
+V4:
+fancy agression
