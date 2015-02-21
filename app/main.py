@@ -52,7 +52,7 @@ def move():
 
         for i, d in enumerate(edge_distances):
             if d[1] < dist_max:
-                dist_max = edge_distances[1]
+                dist_max = edge_distances[i][1]
                 index = i
 
         direction = edge_distances[i][0]
