@@ -47,19 +47,19 @@ def move():
             (DOWN, height - head_y - 1),
             (LEFT, head_x)
         ]
-        dist_max = sys.maxint
+        dist_min = sys.maxint
         min_index = -1
 
         for i, d in enumerate(edge_distances):
-            if d[1] < dist_max:
-                dist_max = edge_distances[i][1]
+            if d[1] < dist_min:
+                dist_min = edge_distances[i][1]
                 index = i
 
         direction = edge_distances[i][0]
 
         return json.dumps({
             'move': direction,
-            'taunt': 'Gotta go fast!!!!!1'
+            'taunt': direction
         })
 
     return json.dumps({
