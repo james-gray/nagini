@@ -22,7 +22,7 @@ def start():
 
     return json.dumps({
         'name': 'nagini',
-        'color': '#00ff00',
+        'color': '#22ff00',
         'head_url': 'https://raw.githubusercontent.com/james-gray/nagini/master/SnakeHead.png',
         'taunt': 'All your base are belong to us!'
     })
