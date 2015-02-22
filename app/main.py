@@ -83,13 +83,16 @@ def look_ahead(head_x, head_y, board):
     safe_states = ('empty', 'food')
 
     if head_x + 1 < width - 1 and board[head_x+1][head_y]['state'] in safe_states:
-        directions.append(RIGHT)
+        directions.append((RIGHT, board[head_x+1][head_y]['state'] == 'food'))
+
     if head_x - 1 >= 1 and board[head_x-1][head_y]['state'] in safe_states:
-        directions.append(LEFT)
+        directions.append((LEFT, board[head_x-1][head_y]['state'] == 'food'))
+
     if head_y + 1 < height - 1 and board[head_x][head_y+1]['state'] in safe_states:
-        directions.append(DOWN)
+        directions.append((DOWN, board[head_x][head_y+1]['state'] == 'food'))
+
     if head_y - 1 >= 1 and board[head_x][head_y-1]['state'] in safe_states:
-        directions.append(UP)
+        directions.append((UP, board[head_x][head_y-1]['state'] == 'food'))
 
     return directions
 
@@ -169,10 +172,19 @@ def move():
     else:
         direction = UP
 
-    return json.dumps({
-        'move': direction if direction in directions else choice(directions),
-        'taunt': choice(smacktalk)
-    })
+    food = [x for x, food in directions if food]
+
+    if food:
+        return json.dumps({
+            'move': choice(food),
+            'taunt': choice(smacktalk)
+        })
+    else:
+        ds = [x for x, _ in directions]
+        return json.dumps({
+            'move': direction if direction in ds else choice(directions),
+            'taunt': choice(smacktalk)
+        })
 
 
 @bottle.post('/end')
