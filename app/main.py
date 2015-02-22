@@ -82,16 +82,16 @@ def look_ahead(head_x, head_y, board):
     directions = []
     safe_states = ('empty', 'food')
 
-    if head_x + 1 < width - 1 and board[head_x+1][head_y]['state'] in safe_states:
+    if head_x + 1 < width and board[head_x+1][head_y]['state'] in safe_states:
         directions.append(RIGHT)
 
-    if head_x - 1 >= 1 and board[head_x-1][head_y]['state'] in safe_states:
+    if head_x - 1 >= 0 and board[head_x-1][head_y]['state'] in safe_states:
         directions.append(LEFT)
 
-    if head_y + 1 < height - 1 and board[head_x][head_y+1]['state'] in safe_states:
+    if head_y + 1 < height and board[head_x][head_y+1]['state'] in safe_states:
         directions.append(DOWN)
 
-    if head_y - 1 >= 1 and board[head_x][head_y-1]['state'] in safe_states:
+    if head_y - 1 >= 0 and board[head_x][head_y-1]['state'] in safe_states:
         directions.append(UP)
 
     return directions
@@ -145,12 +145,12 @@ def move():
         })
 
     # If not on an edge, start moving towards one
-    if not any([head_x in (1, width-2), head_y in (1, height-2)]):
+    if not any([head_x in (0, width-1), head_y in (0, height-1)]):
         edge_distances = [
-            (UP, head_y - 1),
-            (RIGHT, width - head_x - 2),
-            (DOWN, height - head_y - 2),
-            (LEFT, head_x -1)
+            (UP, head_y),
+            (RIGHT, width - head_x - 1),
+            (DOWN, height - head_y - 1),
+            (LEFT, head_x)
         ]
         dist_min = sys.maxint
         # min_index = -1
@@ -163,11 +163,11 @@ def move():
 
         direction = edge_distances[index][0]
 
-    elif head_y == 1 and 1 <= head_x <= width-3:
+    elif head_y == 0 and 0 <= head_x <= width-2:
         direction = RIGHT
-    elif head_x == width-2 and 1 <= head_y <= height-3:
+    elif head_x == width-1 and 0 <= head_y <= height-2:
         direction = DOWN
-    elif head_y == height-2 and 2 <= head_x <= width-2:
+    elif head_y == height-1 and 1 <= head_x <= width-1:
         direction = LEFT
     else:
         direction = UP
