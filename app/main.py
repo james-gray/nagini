@@ -38,7 +38,7 @@ def start():
         'name': 'nagini',
         'color': '#22ff00',
         'head_url': 'https://raw.githubusercontent.com/james-gray/nagini/master/SnakeHead.png',
-        'taunt': 'All your base are belong to us!'
+        'taunt': choice(smacktalk)
     })
 
 def get_adjacent_cells(nagini, board):
@@ -171,7 +171,7 @@ def move():
 
     return json.dumps({
         'move': direction if direction in directions else choice(directions),
-        'taunt': 'All your base are belong to us!'
+        'taunt': choice(smacktalk)
     })
 
 
