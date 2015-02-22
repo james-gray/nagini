@@ -182,9 +182,9 @@ def move():
             'taunt': choice(smacktalk)
         })
     else:
-        ds = [x for x, _ in directions]
+        directions = [x for x, _ in directions]
         return json.dumps({
-            'move': direction if direction in ds else choice(directions),
+            'move': direction if direction in directions else choice(directions),
             'taunt': choice(smacktalk)
         })
 
