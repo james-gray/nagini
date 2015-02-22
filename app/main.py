@@ -83,16 +83,16 @@ def look_ahead(head_x, head_y, board):
     safe_states = ('empty', 'food')
 
     if head_x + 1 < width - 1 and board[head_x+1][head_y]['state'] in safe_states:
-        directions.append((RIGHT, board[head_x+1][head_y]['state'] == 'food'))
+        directions.append(RIGHT)
 
     if head_x - 1 >= 1 and board[head_x-1][head_y]['state'] in safe_states:
-        directions.append((LEFT, board[head_x-1][head_y]['state'] == 'food'))
+        directions.append(LEFT)
 
     if head_y + 1 < height - 1 and board[head_x][head_y+1]['state'] in safe_states:
-        directions.append((DOWN, board[head_x][head_y+1]['state'] == 'food'))
+        directions.append(DOWN)
 
     if head_y - 1 >= 1 and board[head_x][head_y-1]['state'] in safe_states:
-        directions.append((UP, board[head_x][head_y-1]['state'] == 'food'))
+        directions.append(UP)
 
     return directions
 
@@ -108,19 +108,19 @@ def get_possible_directions(nagini, board):
         if direction == UP:
             look_aheadUP = look_ahead(head_x, head_y-1, board)
             if len(look_aheadUP) > 0:
-                directions.append(UP)
+                directions.append((UP, board[head_x][head_y-1]['state'] == 'food'))
         elif direction == DOWN:
             look_aheadDOWN = look_ahead(head_x, head_y+1, board)
             if len(look_aheadDOWN) > 0:
-                directions.append(DOWN)
+                directions.append((DOWN, board[head_x][head_y+1]['state'] == 'food'))
         elif direction == LEFT:
             look_aheadLEFT = look_ahead(head_x-1, head_y, board)
             if len(look_aheadLEFT) > 0:
-                directions.append(LEFT)
+                directions.append((LEFT, board[head_x-1][head_y]['state'] == 'food'))
         elif direction == RIGHT:
             look_aheadRIGHT = look_ahead(head_x+1, head_y, board)
             if len(look_aheadRIGHT) > 0:
-                directions.append(RIGHT)
+                directions.append((RIGHT, board[head_x+1][head_y]['state'] == 'food'))
 
     return directions
 
