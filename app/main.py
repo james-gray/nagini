@@ -142,12 +142,12 @@ def move():
         })
 
     # If not on an edge, start moving towards one
-    if not any([head_x in (0, width-1), head_y in (0, height-1)]):
+    if not any([head_x in (1, width-2), head_y in (1, height-2)]):
         edge_distances = [
-            (UP, head_y),
-            (RIGHT, width - head_x - 1),
-            (DOWN, height - head_y - 1),
-            (LEFT, head_x)
+            (UP, head_y - 1),
+            (RIGHT, width - head_x - 2),
+            (DOWN, height - head_y - 2),
+            (LEFT, head_x -1)
         ]
         dist_min = sys.maxint
         # min_index = -1
@@ -160,11 +160,11 @@ def move():
 
         direction = edge_distances[index][0]
 
-    elif head_y == 0 and 0 <= head_x <= width-2:
+    elif head_y == 1 and 1 <= head_x <= width-3:
         direction = RIGHT
-    elif head_x == width-1 and 0 <= head_y <= height-2:
+    elif head_x == width-2 and 1 <= head_y <= height-3:
         direction = DOWN
-    elif head_y == height-1 and 1 <= head_x <= width-1:
+    elif head_y == height-2 and 2 <= head_x <= width-2:
         direction = LEFT
     else:
         direction = UP
