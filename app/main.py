@@ -160,10 +160,13 @@ def move_edge(nagini, bounds):
 def move():
     data = bottle.request.json
 
+    width = len(data['board'])
+    height = len(data['board'][0])
+
     bounds = {
         "up": 1,
-        "down": len(data['board'][0]) - 2,
-        "right": len(data['board']) - 2,
+        "down": height - 2,
+        "right": width - 2,
         "left": 1,
     }
 
@@ -171,12 +174,22 @@ def move():
 
     directions = get_possible_directions(nagini, data['board'], bounds)
     if not directions:
-        # Commit suicide honorably so as not to give any victories to
-        # the other inferior snakes!
-        return json.dumps({
-            'move': seppuku(nagini, data['board']),
-            'taunt': 'You will always remember this as the day you almost caught Captain Jack Sparrow!'
-        })
+        bounds = {
+            "up": 0,
+            "down": height - 1,
+            "right": width - 1,
+            "left": 0,
+        }
+
+        directions = get_possible_directions(nagini, data['board'], bounds)
+        if not directions:
+            # Commit suicide honorably so as not to give any victories to
+            # the other inferior snakes!
+
+            return json.dumps({
+                'move': seppuku(nagini, data['board']),
+                'taunt': 'You will always remember this as the day you almost caught Captain Jack Sparrow!'
+            })
 
     direction = move_edge(nagini, bounds)
 
