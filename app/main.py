@@ -75,50 +75,48 @@ def seppuku(nagini, board):
     return choice(directions)
 
 
-def look_ahead(head_x, head_y, board):
-    width = len(board)
-    height = len(board[0])
+def look_ahead(head_x, head_y, board, bounds):
 
     directions = []
     safe_states = ('empty', 'food')
 
-    if head_x + 1 < width and board[head_x+1][head_y]['state'] in safe_states:
+    if head_x + 1 <= bounds['right'] and board[head_x+1][head_y]['state'] in safe_states:
         directions.append(RIGHT)
 
-    if head_x - 1 >= 0 and board[head_x-1][head_y]['state'] in safe_states:
+    if head_x - 1 >= bounds['left'] and board[head_x-1][head_y]['state'] in safe_states:
         directions.append(LEFT)
 
-    if head_y + 1 < height and board[head_x][head_y+1]['state'] in safe_states:
+    if head_y + 1 <= bounds['down'] and board[head_x][head_y+1]['state'] in safe_states:
         directions.append(DOWN)
 
-    if head_y - 1 >= 0 and board[head_x][head_y-1]['state'] in safe_states:
+    if head_y - 1 >= bounds['up'] and board[head_x][head_y-1]['state'] in safe_states:
         directions.append(UP)
 
     return directions
 
-def get_possible_directions(nagini, board):
+def get_possible_directions(nagini, board, bounds):
     coords = nagini['coords']
     head_x, head_y = coords[0][0], coords[0][1]
 
-    look_ahead1 = look_ahead(head_x, head_y, board)
+    look_ahead1 = look_ahead(head_x, head_y, board, bounds)
 
     directions = []
 
     for direction in look_ahead1:
         if direction == UP:
-            look_aheadUP = look_ahead(head_x, head_y-1, board)
+            look_aheadUP = look_ahead(head_x, head_y-1, board, bounds)
             if len(look_aheadUP) > 0:
                 directions.append((UP, board[head_x][head_y-1]['state'] == 'food'))
         elif direction == DOWN:
-            look_aheadDOWN = look_ahead(head_x, head_y+1, board)
+            look_aheadDOWN = look_ahead(head_x, head_y+1, board, bounds)
             if len(look_aheadDOWN) > 0:
                 directions.append((DOWN, board[head_x][head_y+1]['state'] == 'food'))
         elif direction == LEFT:
-            look_aheadLEFT = look_ahead(head_x-1, head_y, board)
+            look_aheadLEFT = look_ahead(head_x-1, head_y, board, bounds)
             if len(look_aheadLEFT) > 0:
                 directions.append((LEFT, board[head_x-1][head_y]['state'] == 'food'))
         elif direction == RIGHT:
-            look_aheadRIGHT = look_ahead(head_x+1, head_y, board)
+            look_aheadRIGHT = look_ahead(head_x+1, head_y, board, bounds)
             if len(look_aheadRIGHT) > 0:
                 directions.append((RIGHT, board[head_x+1][head_y]['state'] == 'food'))
 
@@ -128,14 +126,18 @@ def get_possible_directions(nagini, board):
 def move():
     data = bottle.request.json
 
-    width = len(data['board'])
-    height = len(data['board'][0])
+    bounds = {
+        "up": 1,
+        "down": len(data['board'][0]) - 2,
+        "right": len(data['board']) - 2,
+        "left": 1,
+    }
 
     nagini = [s for s in data['snakes'] if s['name'] == 'nagini'][0]
     coords = nagini['coords']
     head_x, head_y = coords[0][0], coords[0][1]
 
-    directions = get_possible_directions(nagini, data['board'])
+    directions = get_possible_directions(nagini, data['board'], bounds)
     if not directions:
         # Commit suicide honorably so as not to give any victories to
         # the other inferior snakes!
@@ -145,12 +147,12 @@ def move():
         })
 
     # If not on an edge, start moving towards one
-    if not any([head_x in (0, width-1), head_y in (0, height-1)]):
+    if not any([head_x in (bounds['left'], bounds['right']), head_y in (bounds['up'], bounds['down'])]):
         edge_distances = [
-            (UP, head_y),
-            (RIGHT, width - head_x - 1),
-            (DOWN, height - head_y - 1),
-            (LEFT, head_x)
+            (UP, head_y - bounds['up']),
+            (RIGHT, bounds['right'] - head_x),
+            (DOWN, bounds['down'] - head_y),
+            (LEFT, head_x - bounds['left'])
         ]
         dist_min = sys.maxint
         # min_index = -1
@@ -163,11 +165,11 @@ def move():
 
         direction = edge_distances[index][0]
 
-    elif head_y == 0 and 0 <= head_x <= width-2:
+    elif head_y == bounds['up'] and bounds['left'] <= head_x <= bounds['right'] - 1:
         direction = RIGHT
-    elif head_x == width-1 and 0 <= head_y <= height-2:
+    elif head_x == bounds['right'] and bounds['up'] <= head_y <= bounds['down'] - 1:
         direction = DOWN
-    elif head_y == height-1 and 1 <= head_x <= width-1:
+    elif head_y == bounds['down'] and bounds['left'] + 1 <= head_x <= bounds['right']:
         direction = LEFT
     else:
         direction = UP
