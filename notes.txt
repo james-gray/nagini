@@ -17,3 +17,6 @@ V3:
 simple agression
 V4:
 fancy agression
+
+if no valid moves allowing us to survive:
+    go back on self

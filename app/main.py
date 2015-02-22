@@ -10,6 +10,17 @@ RIGHT = u'right'
 DOWN = u'down'
 LEFT = u'left'
 
+smacktalk = [
+              'All your base are belong to us',
+              '#GETREKT',
+              '#GETSHREKT',
+              'BOOM HEADSHOT!',
+              'Im sorry Dave, Im afraid i cant do that',
+              'Rippety-tip-top-kek',
+              'When the bass goes harangity woup woup woup clackity grind',
+              'Dmitrii please'
+            ]
+
 @bottle.get('/')
 def index():
     return """
