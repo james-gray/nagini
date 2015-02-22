@@ -122,29 +122,9 @@ def get_possible_directions(nagini, board, bounds):
 
     return directions
 
-@bottle.post('/move')
-def move():
-    data = bottle.request.json
-
-    bounds = {
-        "up": 1,
-        "down": len(data['board'][0]) - 2,
-        "right": len(data['board']) - 2,
-        "left": 1,
-    }
-
-    nagini = [s for s in data['snakes'] if s['name'] == 'nagini'][0]
+def move_edge(nagini, bounds):
     coords = nagini['coords']
     head_x, head_y = coords[0][0], coords[0][1]
-
-    directions = get_possible_directions(nagini, data['board'], bounds)
-    if not directions:
-        # Commit suicide honorably so as not to give any victories to
-        # the other inferior snakes!
-        return json.dumps({
-            'move': seppuku(nagini, data['board']),
-            'taunt': 'You will always remember this as the day you almost caught Captain Jack Sparrow!'
-        })
 
     # If not on an edge, start moving towards one
     if not any([head_x in (bounds['left'], bounds['right']), head_y in (bounds['up'], bounds['down'])]):
@@ -173,6 +153,32 @@ def move():
         direction = LEFT
     else:
         direction = UP
+
+    return direction
+
+@bottle.post('/move')
+def move():
+    data = bottle.request.json
+
+    bounds = {
+        "up": 1,
+        "down": len(data['board'][0]) - 2,
+        "right": len(data['board']) - 2,
+        "left": 1,
+    }
+
+    nagini = [s for s in data['snakes'] if s['name'] == 'nagini'][0]
+
+    directions = get_possible_directions(nagini, data['board'], bounds)
+    if not directions:
+        # Commit suicide honorably so as not to give any victories to
+        # the other inferior snakes!
+        return json.dumps({
+            'move': seppuku(nagini, data['board']),
+            'taunt': 'You will always remember this as the day you almost caught Captain Jack Sparrow!'
+        })
+
+    direction = move_edge(nagini, bounds)
 
     food = [x for x, food in directions if food]
 
