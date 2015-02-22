@@ -76,19 +76,19 @@ def seppuku(nagini, board):
 
 
 def look_ahead(head_x, head_y, board):
-    width = len(board) - 1
-    height = len(board[0]) - 1
+    width = len(board)
+    height = len(board[0])
 
     directions = []
     safe_states = ('empty', 'food')
 
-    if head_x + 1 < width and board[head_x+1][head_y]['state'] in safe_states:
+    if head_x + 1 < width - 1 and board[head_x+1][head_y]['state'] in safe_states:
         directions.append(RIGHT)
-    if head_x - 1 >= 0 and board[head_x-1][head_y]['state'] in safe_states:
+    if head_x - 1 >= 1 and board[head_x-1][head_y]['state'] in safe_states:
         directions.append(LEFT)
-    if head_y + 1 < height and board[head_x][head_y+1]['state'] in safe_states:
+    if head_y + 1 < height - 1 and board[head_x][head_y+1]['state'] in safe_states:
         directions.append(DOWN)
-    if head_y - 1 >= 0 and board[head_x][head_y-1]['state'] in safe_states:
+    if head_y - 1 >= 1 and board[head_x][head_y-1]['state'] in safe_states:
         directions.append(UP)
 
     return directions
